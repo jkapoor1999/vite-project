@@ -1,23 +1,24 @@
 import { Badge } from "@/components/ui/badge";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-const headers = {
+export const headers = {
   "Content-Type": "application/json",
   Authorization: "JWT fefege...",
   apiKey: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6d2treHlwcXh0am54c2VzZWZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4NTA0MzgsImV4cCI6MjA1OTQyNjQzOH0.LyBJid5CSta13XHOBRwxzp85hlISwUD-VsvUynRfc3I`,
 };
 
-interface EventDetails {
+export interface EventDetailsObj {
   event_id: number;
   name: string;
-  decription: string;
-  startTime: string;
-  endTime: string;
+  description: string;
+  start_time: string;
+  end_time: string;
   created_at: string;
   updated_at: string;
 }
 
-async function getEventList(): Promise<EventDetails[]> {
+async function getEventList(): Promise<EventDetailsObj[]> {
   const res = await fetch(
     `https://wzwkkxypqxtjnxsesefk.supabase.co/rest/v1/events`,
     { headers }
@@ -29,8 +30,7 @@ async function getEventList(): Promise<EventDetails[]> {
 }
 
 const Events = () => {
-  // const [isActive] = useState(false);
-  const [eventList, setEventList] = useState<EventDetails[]>([]);
+  const [eventList, setEventList] = useState<EventDetailsObj[]>([]);
 
   useEffect(() => {
     getEventList().then(setEventList);
@@ -40,7 +40,7 @@ const Events = () => {
     <>
       <div>
         {eventList.map((eventDetails) => {
-          return <Badge key={eventDetails.event_id}>{eventDetails.name}</Badge>;
+          return <Badge key={eventDetails.event_id}><Link to={`/events/${eventDetails.event_id}`}> {eventDetails.name}</Link></Badge>;
         })}
       </div>
     </>
