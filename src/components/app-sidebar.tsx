@@ -20,8 +20,8 @@ const items = [
     icon: Home,
   },
   {
-    title: "Customers",
-    url: "/customers",
+    title: "Events",
+    url: "/events",
     icon: Inbox,
   },
   {
