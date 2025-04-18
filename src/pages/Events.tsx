@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export const headers = {
   "Content-Type": "application/json",
@@ -18,29 +19,36 @@ export interface EventDetailsObj {
   updated_at: string;
 }
 
-async function getEventList(): Promise<EventDetailsObj[]> {
-  const res = await fetch(
-    `https://wzwkkxypqxtjnxsesefk.supabase.co/rest/v1/events`,
-    { headers }
-  );
-  const obj = await res.json();
-  console.log(obj);
-
-  return obj;
-}
-
 const Events = () => {
   const [eventList, setEventList] = useState<EventDetailsObj[]>([]);
 
   useEffect(() => {
-    getEventList().then(setEventList);
+    async function getEventList() {
+      try {
+        const res = await axios.get(
+          `https://wzwkkxypqxtjnxsesefk.supabase.co/rest/v1/events`,
+          { headers }
+        );
+        setEventList(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getEventList();
   }, []);
 
   return (
     <>
       <div>
         {eventList.map((eventDetails) => {
-          return <Badge key={eventDetails.event_id}><Link to={`/events/${eventDetails.event_id}`}> {eventDetails.name}</Link></Badge>;
+          return (
+            <Badge key={eventDetails.event_id}>
+              <Link to={`/events/${eventDetails.event_id}`}>
+                {" "}
+                {eventDetails.name}
+              </Link>
+            </Badge>
+          );
         })}
       </div>
     </>

@@ -1,17 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { EventDetailsObj, headers } from "./Events";
-
-async function getEventDetails(event_id: string): Promise<EventDetailsObj> {
-  const res = await fetch(
-    `https://wzwkkxypqxtjnxsesefk.supabase.co/rest/v1/events?event_id=eq.${event_id}`,
-    { headers }
-  );
-  const obj = await res.json();
-  console.log(obj);
-
-  return obj[0];
-}
+import axios from "axios";
 
 const EventDetails = () => {
   const [eventDetails, setEventDetails] = useState<EventDetailsObj>();
@@ -21,7 +11,15 @@ const EventDetails = () => {
   useEffect(() => {
     if (event_id) {
       // Check if event_id is not undefined
-      getEventDetails(event_id).then(setEventDetails);
+      async function getEventDetails(event_id: string) {
+        const res = await axios.get(
+          `https://wzwkkxypqxtjnxsesefk.supabase.co/rest/v1/events?event_id=eq.${event_id}`,
+          { headers: headers }
+        );
+        setEventDetails(res.data[0]);
+      }
+
+      getEventDetails(event_id);
     }
   }, [event_id]);
   return (
