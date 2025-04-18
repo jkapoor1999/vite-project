@@ -1,9 +1,8 @@
-// App.js
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
 import Layout from "./Layout";
-import Events from "./pages/Events";
 import EventDetails from "./pages/EventDetails";
+import Events from "./pages/Events";
+import Home from "./pages/Home";
 
 function App() {
   return (

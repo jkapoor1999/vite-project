@@ -13,7 +13,7 @@ const EventDetails = () => {
       // Check if event_id is not undefined
       async function getEventDetails(event_id: string) {
         const res = await axios.get(
-          `https://wzwkkxypqxtjnxsesefk.supabase.co/rest/v1/events?event_id=eq.${event_id}`,
+          `${import.meta.env.VITE_BASE_URI}/events?event_id=eq.${event_id}`,
           { headers: headers }
         );
         setEventDetails(res.data[0]);

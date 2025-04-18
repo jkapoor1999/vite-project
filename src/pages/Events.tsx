@@ -6,7 +6,7 @@ import axios from "axios";
 export const headers = {
   "Content-Type": "application/json",
   Authorization: "JWT fefege...",
-  apiKey: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6d2treHlwcXh0am54c2VzZWZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4NTA0MzgsImV4cCI6MjA1OTQyNjQzOH0.LyBJid5CSta13XHOBRwxzp85hlISwUD-VsvUynRfc3I`,
+  apiKey: import.meta.env.VITE_API_KEY,
 };
 
 export interface EventDetailsObj {
@@ -19,17 +19,22 @@ export interface EventDetailsObj {
   updated_at: string;
 }
 
+interface EventListObj {
+  event_id: number;
+  name: string;
+}
+
 const Events = () => {
-  const [eventList, setEventList] = useState<EventDetailsObj[]>([]);
+  const [eventList, setEventList] = useState<EventListObj[]>([]);
 
   useEffect(() => {
     async function getEventList() {
       try {
-        const res = await axios.get(
-          `https://wzwkkxypqxtjnxsesefk.supabase.co/rest/v1/events`,
-          { headers }
-        );
+        const res = await axios.get(`${import.meta.env.VITE_BASE_URI}/events?select=event_id,name`, {
+          headers,
+        });
         setEventList(res.data);
+        console.log(res.data);
       } catch (error) {
         console.log(error);
       }
